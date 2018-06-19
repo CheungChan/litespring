@@ -2,7 +2,6 @@ package org.litespring.context.support;
 
 import org.litespring.core.io.ClasspathResource;
 import org.litespring.core.io.Resource;
-import org.litespring.util.ClassUtils;
 
 public class ClasspathXMLApplictionContext extends AbstractApplicationContext {
 
