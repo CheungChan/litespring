@@ -7,7 +7,7 @@ import org.litespring.beans.BeanDefination;
 import org.litespring.beans.factory.BeanCreateException;
 import org.litespring.beans.factory.BeanDefinitionStoreException;
 import org.litespring.beans.factory.support.DefaultBeanFactory;
-import org.litespring.beans.factory.xml.XmlDefinationReader;
+import org.litespring.beans.factory.xml.XmlBeanDefinationReader;
 import org.litespring.core.io.ClasspathResource;
 import org.litespring.core.io.Resource;
 import org.litespring.service.v1.PetStoreService;
@@ -15,13 +15,13 @@ import org.litespring.service.v1.PetStoreService;
 import static org.junit.Assert.*;
 
 public class BeanFactoryTest {
-    private XmlDefinationReader reader;
+    private XmlBeanDefinationReader reader;
     private DefaultBeanFactory factory;
 
     @Before
     public void setUp() {
         factory = new DefaultBeanFactory();
-        reader = new XmlDefinationReader(factory);
+        reader = new XmlBeanDefinationReader(factory);
     }
 
     @Test
