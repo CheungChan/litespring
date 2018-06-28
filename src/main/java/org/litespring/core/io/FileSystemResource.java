@@ -24,4 +24,8 @@ public class FileSystemResource implements Resource {
     public String getDescription() {
         return "file (" + this.file.getAbsolutePath() + ")";
     }
+
+    public String getPath() {
+        return path;
+    }
 }

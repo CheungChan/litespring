@@ -76,7 +76,7 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
             for (PropertyValue pv : pvs) {
                 String propertyName = pv.getName();
                 Object originalValue = pv.getValue();
-                Object resolvedValue = resolver.resolveValueIfNeccessay(originalValue);
+                Object resolvedValue = resolver.resolveValueIfNeccessay(originalValue, pv);
                 // 接下来调用bean的set方法设置属性 可以使用jdk提供的Introspector获取BeanInfo
                 BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
                 PropertyDescriptor[] pds = beanInfo.getPropertyDescriptors();

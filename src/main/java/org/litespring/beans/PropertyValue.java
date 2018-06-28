@@ -30,4 +30,13 @@ public class PropertyValue {
     public synchronized boolean isConverted() {
         return this.converted;
     }
+
+    public Object getConvertedValue() {
+        return convertedValue;
+    }
+
+    public void setConvertedValue(Object convertedValue) {
+        this.convertedValue = convertedValue;
+        this.converted = true;
+    }
 }

@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class ClasspathResource implements Resource {
-    private String path;
-    private ClassLoader loader;
+    private final String path;
+    private final ClassLoader loader;
 
     public ClasspathResource(String path) {
         this(path, (ClassLoader) null);
