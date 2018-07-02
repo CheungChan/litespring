@@ -7,6 +7,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.litespring.beans.BeanDefination;
+import org.litespring.beans.ConstructorArgument;
 import org.litespring.beans.PropertyValue;
 import org.litespring.beans.factory.BeanDefinitionStoreException;
 import org.litespring.beans.factory.config.RuntimeBeanReference;
@@ -29,6 +30,8 @@ public class XmlBeanDefinationReader {
     private static final String REF_ATTRIBUTE = "ref";
     private static final String VALUE_ATTRIBUTE = "value";
     private static final String NAME_ATTRIBUTE = "name";
+    private static final String CONSTRUCTOR_ARGS_ELEMENT = "constructor-args";
+    private static final String TYPE_ATTRIBUTE_ATTRIBUTE = "type";
     private BeanDefinationRegisty registy;
     private final Log logger = LogFactory.getLog(getClass());
 
@@ -54,6 +57,7 @@ public class XmlBeanDefinationReader {
                 if (scope != null) {
                     bd.setScope(scope);
                 }
+                this.parseConstructorArguments(ele, bd);
                 this.parsePropertyElement(ele, bd);
                 this.registy.registerBeanDefination(id, bd);
             }
@@ -106,5 +110,27 @@ public class XmlBeanDefinationReader {
         } else {
             throw new RuntimeException(elementName + "must specify a ref or a value");
         }
+    }
+
+    public void parseConstructorArguments(Element beanEle, BeanDefination bd) {
+        Iterator iter = beanEle.elementIterator(CONSTRUCTOR_ARGS_ELEMENT);
+        while (iter.hasNext()) {
+            Element ele = (Element) iter.next();
+            parseConstructorArgument(ele, bd);
+        }
+    }
+
+    public void parseConstructorArgument(Element beanEle, BeanDefination bd) {
+        String typeAttr = beanEle.attributeValue(TYPE_ATTRIBUTE_ATTRIBUTE);
+        String nameAttr = beanEle.attributeValue(NAME_ATTRIBUTE);
+        Object value = parsePropertyValue(beanEle, bd, null);
+        ConstructorArgument.ValueHolder valueHolder = new ConstructorArgument.ValueHolder(value);
+        if (StringUtils.hasLength(typeAttr)) {
+            valueHolder.setType(typeAttr);
+        }
+        if (StringUtils.hasLength(nameAttr)) {
+            valueHolder.setName(nameAttr);
+        }
+        bd.getConstructorArgument().addArgumentValue(valueHolder);
     }
 }

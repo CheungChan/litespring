@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="petStore"
+          class="org.litespring.service.v3.PetStoreService">
+        <constructor-args ref="accountDao"></constructor-args>
+        <constructor-args ref="itemDao"></constructor-args>
+        <constructor-args value="1"></constructor-args>
+    </bean>
+    <bean id="accountDao" class="org.litespring.dao.v3.AccountDAO"></bean>
+    <bean id="itemDao" class="org.litespring.dao.v3.ItemDAO"></bean>
+</beans>
