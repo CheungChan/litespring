@@ -1,5 +1,6 @@
 package org.litespring.beans.factory.support;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.litespring.beans.BeanDefination;
 import org.litespring.beans.PropertyValue;
 import org.litespring.beans.SimpleTypeConverter;
@@ -50,7 +51,8 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
         // 创建实例
         Object bean = instantiateBean(bd);
         // 设置属性
-        populateBean(bd, bean);
+//        populateBean(bd, bean);
+        populateBeanUseBeanUtils(bd, bean);
         return bean;
     }
 
@@ -93,6 +95,25 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
             throw new BeanCreateException("Failed to obtain BeanInfo for class [" + bean.getClass() + "]");
         }
 
+    }
+
+    private void populateBeanUseBeanUtils(BeanDefination bd, Object bean) {
+        List<PropertyValue> pvs = bd.getPropertyValues();
+        if (pvs == null || pvs.isEmpty()) {
+            return;
+        }
+        BeanDefinationValueResolver resolver = new BeanDefinationValueResolver(this);
+        try {
+            for (PropertyValue pv : pvs) {
+                String propertyName = pv.getName();
+                Object originalValue = pv.getValue();
+                Object resolvedValue = resolver.resolveValueIfNeccessay(originalValue, pv);
+                // 使用commons.beanutils里面的setPropertyValue来设置bean的属性, 不再需要自己写类型转换
+                BeanUtils.setProperty(bean, propertyName, resolvedValue);
+            }
+        } catch (Exception ex) {
+            throw new BeanCreateException("Failed to obtain BeanInfo for class [" + bean.getClass() + "]");
+        }
     }
 
     public void setBeanClassLoader(ClassLoader beanClassLoader) {
